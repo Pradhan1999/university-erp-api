@@ -1,9 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
   integer,
-  jsonb,
-  index,
-  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -23,21 +20,17 @@ export const departments = pgTable("departments", {
   code: varchar("code", { length: 50 }).notNull().unique(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
-
   ...timestamps,
 });
 
 export const subjects = pgTable("subjects", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-
   departmentId: integer("department_id")
     .notNull()
     .references(() => departments.id, { onDelete: "restrict" }),
-
   name: varchar("name", { length: 255 }).notNull(),
   code: varchar("code", { length: 50 }).notNull().unique(),
   description: text("description"),
-
   ...timestamps,
 });
 
@@ -45,7 +38,7 @@ export const departmentsRelations = relations(departments, ({ many }) => ({
   subjects: many(subjects),
 }));
 
-export const subjectsRelations = relations(subjects, ({ one, many }) => ({
+export const subjectsRelations = relations(subjects, ({ one }) => ({
   department: one(departments, {
     fields: [subjects.departmentId],
     references: [departments.id],
