@@ -1,6 +1,7 @@
 import express from "express";
 import subjectsRouter from "./routes/subjects.route";
 import classesRouter from "./routes/classes.route";
+import usersRouter from "./routes/users.route";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import { auth } from "./lib/auth";
@@ -29,6 +30,7 @@ app.use(express.json());
 // ROUTES
 app.use("/api/v1/subjects", subjectsRouter);
 app.use("/api/v1/classes", classesRouter);
+app.use("/api/v1/users", usersRouter);
 
 // Root GET route and check db is connected
 app.get("/", (req, res) => {
