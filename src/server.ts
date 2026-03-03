@@ -1,6 +1,9 @@
 import express from "express";
 import subjectsRouter from "./routes/subjects.route";
+import classesRouter from "./routes/classes.route";
+import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
+import { auth } from "./lib/auth";
 
 const app = express();
 const PORT = 8000;
@@ -17,11 +20,15 @@ app.use(
   }),
 );
 
+// Authentication routes
+app.all("/api/auth/*splat", toNodeHandler(auth));
+
 // Middleware to parse JSON
 app.use(express.json());
 
 // ROUTES
 app.use("/api/v1/subjects", subjectsRouter);
+app.use("/api/v1/classes", classesRouter);
 
 // Root GET route and check db is connected
 app.get("/", (req, res) => {
